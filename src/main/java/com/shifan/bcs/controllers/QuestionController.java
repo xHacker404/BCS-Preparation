@@ -89,4 +89,39 @@ public class QuestionController {
         model.addAttribute("message", "Question updated  Successfully!!!");
         return "update";
     }
+    
+    @RequestMapping("/updateAllQuestion")
+    public String updateAllQuestion(Model model) throws SQLException, ClassNotFoundException{
+        
+        SessionFactory factory = new Configuration()
+                                 .configure("hibernate.cfg.xml")
+                                 .addAnnotatedClass(Question.class)
+                                 .buildSessionFactory();
+        
+        Session session = factory.getCurrentSession();
+    
+       
+        try {
+        
+        
+        
+        session.beginTransaction();
+        
+        session.createQuery("Update Question set content='What is the age of your pet?'").executeUpdate();
+        
+        
+        session.getTransaction().commit();
+            
+        } catch (Exception e) {
+            
+            
+        }finally{
+           factory.close();
+        }
+        
+       
+        
+        model.addAttribute("message", "Question updated  Successfully!!!");
+        return "update";
+    }
 }
