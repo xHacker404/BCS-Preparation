@@ -6,15 +6,43 @@
 package com.shifan.bcs.models;
 
 import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 
 /**
  *
  * @author dimiksonkha
  */
+@Entity
+@Table(name="Question")
 public class Question {
     
+    @Id
+    @Column(name="id")
+    private int id;
+    @Column(name="content")
     private String content;
+
+   
+    @javax.persistence.Transient
     private List answer;
+    
+    
+    public Question(){
+    
+    }
+    
+     @Override
+    public String toString() {
+        return "Question{" + "id=" + id + ", content=" + content  + '}';
+    }
+
+    public Question(String content) {
+        this.content = content;
+    }
 
     public String getContent() {
         return content;
@@ -30,6 +58,14 @@ public class Question {
 
     public void setAnswer(List answer) {
         this.answer = answer;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     

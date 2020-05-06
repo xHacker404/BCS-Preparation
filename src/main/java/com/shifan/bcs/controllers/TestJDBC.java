@@ -5,9 +5,11 @@
  */
 package com.shifan.bcs.controllers;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
+import com.shifan.bcs.models.Question;
 import java.sql.SQLException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,17 +21,40 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class TestJDBC {
   
-    @RequestMapping("/test")
+    @RequestMapping("/addQuestion")
     public String testConnection(Model model) throws SQLException, ClassNotFoundException{
         
-        Class.forName("com.mysql.jdbc.Driver"); 
-        String jdbcUrl = "jdbc:mysql://localhost:3306/bcs_questions?useSSL=false&serverTimezone=UTC";  
-        String user="root";
-        String pass="Root.12345";
+        SessionFactory factory = new Configuration()
+                                 .configure("hibernate.cfg.xml")
+                                 .addAnnotatedClass(Question.class)
+                                 .buildSessionFactory();
         
-        Connection con = DriverManager.getConnection(jdbcUrl, user,pass);
+        Session session = factory.getCurrentSession();
         
-        model.addAttribute("message", "Driver Connection Successful!!!");
+        
+        
+        
+        
+        try {
+        
+        Question q1= new Question("What is the name of our national poet?");
+        
+        session.beginTransaction();
+        
+        session.save(q1);
+        
+        session.getTransaction().commit();
+            
+        } catch (Exception e) {
+            
+            
+        }finally{
+           factory.close();
+        }
+        
+       
+        
+        model.addAttribute("message", "Student saved  Successfully!!!");
         return "test";
     }
 }
