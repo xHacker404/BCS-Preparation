@@ -9,6 +9,9 @@ import com.shifan.bcs.models.Answer;
 import com.shifan.bcs.models.Question;
 import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,14 +23,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class HomeController {
     
-    private List questions = new ArrayList();
+    private List<Question> questions; 
     
     private void populateQuestionAndAnswer(){
-        for (int i = 0; i < 25; i++) {
-            Question q1= new Question();
-            String content = "What is the answer of question " + (i+1);
-            q1.setContent(content);
-            
+        
+        SessionFactory factory = new Configuration()
+                                 .configure("hibernate.cfg.xml")
+                                 .addAnnotatedClass(Question.class)
+                                 .buildSessionFactory();
+        
+        Session session = factory.getCurrentSession();
+        
+              
+        try {
+        
+        session.beginTransaction();
+        
+        questions = session.createQuery("from Question")
+                         .getResultList();
+        
+        for(Question q: questions){
             List answers = new ArrayList();
             for (int j = 0; j <4; j++) {
                 Answer ans = new Answer();
@@ -45,33 +60,41 @@ public class HomeController {
                 
                 }
                 answers.add(ans);
-           
-                
             }
-            q1.setAnswer(answers);
-            questions.add(q1);    
+            q.setAnswer(answers);
             
         }
-    }
-
-    {
-    populateQuestionAndAnswer();
-    }
-    
-    
-
-    
+            
         
+        session.getTransaction().commit();
+            
+        }catch (Exception e) {
+            
+            
+        }finally{
+           factory.close();
+        }
+        
+
     
+               
+            
+        }
     
     @RequestMapping("/")
     public String showHomePage(Model model){
-        
-        
-        
-           
+       populateQuestionAndAnswer();
+            
         model.addAttribute("questions", questions);
         return "index";
     }
     
-}
+    
+    }
+
+   
+    
+   
+    
+   
+    
