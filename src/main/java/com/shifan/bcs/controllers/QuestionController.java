@@ -124,4 +124,74 @@ public class QuestionController {
         model.addAttribute("message", "Question updated  Successfully!!!");
         return "update";
     }
+    
+    @RequestMapping("/deleteQues")
+    public String deleteQuestion(Model model) throws SQLException, ClassNotFoundException{
+        
+        SessionFactory factory = new Configuration()
+                                 .configure("hibernate.cfg.xml")
+                                 .addAnnotatedClass(Question.class)
+                                 .buildSessionFactory();
+        
+        Session session = factory.getCurrentSession();
+    
+        int questionId = 1;
+        try {
+        
+        
+        
+        session.beginTransaction();
+        
+        Question q1= session.get(Question.class, questionId);
+        session.delete(q1);
+        
+        session.getTransaction().commit();
+            
+        } catch (Exception e) {
+            
+            
+        }finally{
+           factory.close();
+        }
+        
+       
+        
+        model.addAttribute("message", "Question deleted  Successfully!!!");
+        return "update";
+    }
+    
+     @RequestMapping("/deleteAllQuestion")
+    public String deleteAllQuestion(Model model) throws SQLException, ClassNotFoundException{
+        
+        SessionFactory factory = new Configuration()
+                                 .configure("hibernate.cfg.xml")
+                                 .addAnnotatedClass(Question.class)
+                                 .buildSessionFactory();
+        
+        Session session = factory.getCurrentSession();
+    
+       
+        try {
+        
+        
+        
+        session.beginTransaction();
+        
+        session.createQuery("Delete Question where id='4'").executeUpdate();
+        
+        
+        session.getTransaction().commit();
+            
+        } catch (Exception e) {
+            
+            
+        }finally{
+           factory.close();
+        }
+        
+       
+        
+        model.addAttribute("message", "Question deleted  Successfully!!!");
+        return "update";
+    }
 }
