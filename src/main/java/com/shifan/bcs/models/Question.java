@@ -5,12 +5,16 @@
  */
 package com.shifan.bcs.models;
 
+import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
@@ -30,8 +34,8 @@ public class Question {
     @Column(name="content")
     private String content;
 
-    // This column is not mapped with database
-    @javax.persistence.Transient
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="question")
     private List answer;
     
     
@@ -39,7 +43,15 @@ public class Question {
     
     }
     
-     @Override
+    public void addAnswer(Answer ans){
+        answer = new ArrayList();
+        
+        ans.setQuestion(this);
+        answer.add(ans);
+     
+    }
+    
+    @Override
     public String toString() {
         return "Question{" + "id=" + id + ", content=" + content  + '}';
     }
