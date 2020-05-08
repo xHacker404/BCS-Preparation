@@ -7,7 +7,6 @@ package com.shifan.bcs.controllers;
 
 import com.shifan.bcs.models.Answer;
 import com.shifan.bcs.models.Question;
-import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -40,18 +39,8 @@ public class HomeController {
         
         session.beginTransaction();
         
-        questions = session.createQuery("from Question")
-                         .getResultList();
-        
-        for(Question q: questions){
-            int question_id=q.getId();
-            List<Answer> answers = session.createQuery("from Answer where question_id="+question_id+"").getResultList();
-            q.setAnswer(answers);
-           
-            
-        }
-            
-        
+        questions = session.createQuery("from Question").getResultList();
+                    
         session.getTransaction().commit();
             
         }catch (Exception e) {
