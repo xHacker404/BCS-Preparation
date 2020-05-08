@@ -5,16 +5,20 @@
  */
 package com.shifan.bcs.controllers;
 
+import com.shifan.bcs.dao.QuestionDAO;
 import com.shifan.bcs.models.Answer;
 import com.shifan.bcs.models.Question;
+import com.shifan.bcs.service.QuestionService;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -22,7 +26,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author dimiksonkha
  */
 @Controller
+@RequestMapping("/question")
 public class QuestionController {
+    
+    @Autowired
+    private QuestionService questionSerivce;
    
   
     @RequestMapping("/addQues")
@@ -225,4 +233,16 @@ public class QuestionController {
         model.addAttribute("message", "Question deleted  Successfully!!!");
         return "update";
     }
+    
+    @GetMapping("/list")
+    public String listQuestions(Model model){
+        
+        List<Question> questions = questionSerivce.getQuestions();
+        
+        model.addAttribute("questions", questions);
+        
+        return "list-questions";
+    }
+    
+    
 }
