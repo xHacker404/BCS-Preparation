@@ -5,8 +5,11 @@
  */
 package com.shifan.bcs.controllers;
 
+import com.shifan.bcs.models.Answer;
 import com.shifan.bcs.models.Question;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -28,6 +31,7 @@ public class QuestionController {
         SessionFactory factory = new Configuration()
                                  .configure("hibernate.cfg.xml")
                                  .addAnnotatedClass(Question.class)
+                                 .addAnnotatedClass(Answer.class)
                                  .buildSessionFactory();
         
         Session session = factory.getCurrentSession();
@@ -35,9 +39,35 @@ public class QuestionController {
         try {
         
         Question q1= new Question("What is the name of our national poet?");
+        List<Answer> answer= new ArrayList();
+        Answer a1= new Answer();
+        a1.setContent("Kazi Nazrul Islam");
+        a1.setExplanation("Kazi nazrul islam is the national poet of Bangladesh");
+        a1.setIsRightAnswer(true);
+        q1.addAnswer(a1);
+        
+        Answer a2= new Answer();
+        a2.setContent("Kazi Ariful Islam");
+        a2.setExplanation("Incorrect:Kazi nazrul islam is the national poet of Bangladesh");
+        q1.addAnswer(a2);
+        
+        Answer a3= new Answer();
+        a3.setContent("Kabi Al Mahmud");
+        a3.setExplanation("Incorrect:Kazi nazrul islam is the national poet of Bangladesh");
+        q1.addAnswer(a3);
+        
+        Answer a4= new Answer();
+        a4.setContent("Samsur Rahman");
+        a4.setExplanation("Incorrect:Kazi nazrul islam is the national poet of Bangladesh");
+        q1.addAnswer(a4);
+        
         
         session.beginTransaction();
         
+        session.save(a1);
+        session.save(a2);
+        session.save(a3);
+        session.save(a4);
         session.save(q1);
         
         session.getTransaction().commit();
@@ -61,6 +91,7 @@ public class QuestionController {
         SessionFactory factory = new Configuration()
                                  .configure("hibernate.cfg.xml")
                                  .addAnnotatedClass(Question.class)
+                                 .addAnnotatedClass(Answer.class)
                                  .buildSessionFactory();
         
         Session session = factory.getCurrentSession();

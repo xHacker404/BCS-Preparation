@@ -38,7 +38,7 @@ public class Answer{
    private boolean isRightAnswer;
    
    @ManyToOne(cascade = CascadeType.ALL)
-   @JoinColumn(name="answer")
+   @JoinColumn(name="question_id")
    private Question question;
 
     public String getContent() {
@@ -80,6 +80,8 @@ public class Answer{
     public void setQuestion(Question question) {
         this.question = question;
     }
+
+
 
    
    

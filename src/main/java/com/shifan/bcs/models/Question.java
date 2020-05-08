@@ -13,7 +13,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -34,9 +33,8 @@ public class Question {
     @Column(name="content")
     private String content;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="question")
-    private List answer;
+    @OneToMany(mappedBy = "question",cascade = CascadeType.ALL)
+    private List<Answer> answer;
     
     
     public Question(){

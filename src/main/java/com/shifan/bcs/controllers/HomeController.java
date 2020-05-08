@@ -30,6 +30,7 @@ public class HomeController {
         SessionFactory factory = new Configuration()
                                  .configure("hibernate.cfg.xml")
                                  .addAnnotatedClass(Question.class)
+                                 .addAnnotatedClass(Answer.class)
                                  .buildSessionFactory();
         
         Session session = factory.getCurrentSession();
@@ -43,25 +44,10 @@ public class HomeController {
                          .getResultList();
         
         for(Question q: questions){
-            List answers = new ArrayList();
-            for (int j = 0; j <4; j++) {
-                Answer ans = new Answer();
-                
-                String answerContent = "Answer" + " "+(j+1);
-                ans.setContent(answerContent);
-                
-                String ansExplanation = "Explanation" + j+1;
-                ans.setExplanation(ansExplanation);
-                
-                if(j==3){
-                   ans.setIsRightAnswer(true);
-                }else{
-                ans.setIsRightAnswer(false);
-                
-                }
-                answers.add(ans);
-            }
+            int question_id=q.getId();
+            List<Answer> answers = session.createQuery("from Answer where question_id="+question_id+"").getResultList();
             q.setAnswer(answers);
+           
             
         }
             
