@@ -5,7 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -23,25 +23,16 @@
   </head>
   <body>
       
-      <h2>Question List</h2>
-      <input type='button' value="Add Question"  onclick="window.location.href='showFormForAdd'; return false;"/>
-      <ol>
-      <c:forEach var="question" items="${questions}">
-          <!-- construct an "update" link with customer id -->
-        <c:url var="updateLink" value="/question/showFormForUpdate">
-                <c:param name="questionId" value="${question.id}" />
-        </c:url>
-          
-         <c:url var="deleteLink" value="/question/delete">
-                <c:param name="questionId" value="${question.id}" />
-        </c:url>
-          
-          <li><b>${question.content}</b>
-          <!-- display the update link -->
-          <a href="${updateLink}">Update</a></li>| <a href="${deleteLink}" onclick="if (!(confirm('Are you sure you want to delete this customer?'))) return false">Delete</a></li>
-             
-      </c:forEach>
-      </ol>    
+   <h2>Add new Question </h2>
+  <form:form action="saveQuestion" modelAttribute="question" method="POST">
+      <label>Content</label>
+      <form:hidden path="id"/>
+      <form:input path="content"/>
+      <input type="submit" value="Save"/>
+                
+      
+  </form:form>
+      
  
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

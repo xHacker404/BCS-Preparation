@@ -29,5 +29,23 @@ public class QuestionServiceImpl implements QuestionService{
         return questionDAO.getQuestions();
                 
     }
+
+    @Override
+    @Transactional
+    public void saveQuestion(Question question) {
+       questionDAO.saveQuestion(question);
+    }
+
+    @Override
+    @Transactional
+    public Question getQuestion(int id) {
+        return questionDAO.getQuestion(id);
+    }
+
+    @Override
+    @Transactional
+    public void deleteQuestion(int id) {
+        questionDAO.deleteQuestion(id);
+    }
     
 }

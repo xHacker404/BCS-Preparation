@@ -5,7 +5,6 @@
  */
 package com.shifan.bcs.controllers;
 
-import com.shifan.bcs.dao.QuestionDAO;
 import com.shifan.bcs.models.Answer;
 import com.shifan.bcs.models.Question;
 import com.shifan.bcs.service.QuestionService;
@@ -19,7 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -242,6 +244,39 @@ public class QuestionController {
         model.addAttribute("questions", questions);
         
         return "list-questions";
+    }
+    
+    @GetMapping("/showFormForAdd")
+    public String showFormForAdd(Model model){
+        Question theQuestion = new Question();
+        
+        model.addAttribute("question", theQuestion);
+        
+        return "question-form";
+    }
+    
+    @PostMapping("/saveQuestion")
+    public String saveQuestion(@ModelAttribute("question") Question question){
+    questionSerivce.saveQuestion(question);
+    return "redirect:/question/list";
+    }
+    
+    @GetMapping("/showFormForUpdate")
+    public String showFormForUpdate(@RequestParam("questionId") int id, Model model){
+        
+        Question theQuestion = questionSerivce.getQuestion(id);
+        
+        model.addAttribute("question", theQuestion);
+        return "question-form";
+    }
+    
+    @GetMapping("/delete")
+    public String deleteQuestion(@RequestParam("questionId") int id, Model model){
+        
+        questionSerivce.deleteQuestion(id);
+       
+        
+        return "redirect:/question/list";
     }
     
     

@@ -15,4 +15,10 @@ import java.util.List;
 public interface QuestionService {
     
     public List<Question> getQuestions();
+
+    public void saveQuestion(Question question);
+
+    public Question getQuestion(int id);
+
+    public void deleteQuestion(int id);
 }

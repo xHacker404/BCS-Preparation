@@ -36,5 +36,34 @@ public class QuestionDAOImpl implements QuestionDAO{
         
         return questions;
     }
+
+    @Override
+    public void saveQuestion(Question question) {
+        
+        Session currentSession = sessionFactory.getCurrentSession();
+        
+        currentSession.saveOrUpdate(question);
+    }
+
+    @Override
+    public Question getQuestion(int id) {
+        Session currentSession = sessionFactory.getCurrentSession();
+        Question question = currentSession.get(Question.class, id);
+        
+        return question;
+    }
+
+    @Override
+    public void deleteQuestion(int id) {
+
+        Session currentSession = sessionFactory.getCurrentSession();
+
+        
+        Query theQuery = 
+                        currentSession.createQuery("delete from Question where id=:questionId");
+        theQuery.setParameter("questionId", id);
+
+        theQuery.executeUpdate();
+    }
     
 }
