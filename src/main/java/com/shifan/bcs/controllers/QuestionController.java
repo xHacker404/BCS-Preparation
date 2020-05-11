@@ -11,17 +11,23 @@ import com.shifan.bcs.service.QuestionService;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  *
@@ -245,6 +251,15 @@ public class QuestionController {
         
         return "list-questions";
     }
+//    
+//    @GetMapping("/list")
+//   
+//    public @ResponseBody List listQuestions(){
+//        
+//        List<Question> questions = questionSerivce.getQuestions();
+//       
+//        return questions;
+//    }
     
     @GetMapping("/showFormForAdd")
     public String showFormForAdd(Model model){
@@ -255,10 +270,22 @@ public class QuestionController {
         return "question-form";
     }
     
-    @PostMapping("/saveQuestion")
-    public String saveQuestion(@ModelAttribute("question") Question question){
+//    @PostMapping("/saveQuestion")
+//    public String saveQuestion(@ModelAttribute("question") Question question){
+//    questionSerivce.saveQuestion(question);
+//    return "redirect:/question/list";
+//    }
+    
+    @PostMapping(value="/saveQuestion",produces = { MediaType.APPLICATION_JSON_VALUE })
+    @ResponseBody
+    public Question saveQuestion(HttpServletRequest request){    
+    
+    String content = request.getParameter("content");
+ 
+    Question question = new Question();
+    question.setContent(content);
     questionSerivce.saveQuestion(question);
-    return "redirect:/question/list";
+    return question;
     }
     
     @GetMapping("/showFormForUpdate")
@@ -277,6 +304,16 @@ public class QuestionController {
        
         
         return "redirect:/question/list";
+    }
+    
+    @GetMapping("/ajax")
+    
+    public String handleAjax(Model model){
+        
+       
+      
+        
+        return "ajax";
     }
     
     
